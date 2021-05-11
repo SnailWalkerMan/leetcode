@@ -20,7 +20,12 @@ public class TreeMain {
 //        postOrder(treeNode);
 
         //BFS算法
-        levelOrder(treeNode);
+//        levelOrder(treeNode);
+
+        List<String> leaves = leafInList(mockSimilarData());
+        for (String leaf : leaves) {
+            System.out.println(leaf);
+        }
     }
 
     private static void levelOrder(TreeNode node) {
@@ -79,11 +84,11 @@ public class TreeMain {
     }
 
     /**
-     *      A
-     *   B      C
+     * A
+     * B      C
      * D   E   F
      */
-    private static TreeNode buildTree() {
+    public static TreeNode buildTree() {
         TreeNode nodeA = new TreeNode("A");
         TreeNode nodeB = new TreeNode("B (AL)");
         TreeNode nodeC = new TreeNode("C (AR)");
@@ -100,5 +105,67 @@ public class TreeMain {
         nodeC.left = nodeF;
 
         return nodeA;
+    }
+
+    /*****************LeetCode 872*****************/
+
+    public static TreeNode mockSimilarData() {
+        TreeNode treeNode1 = new TreeNode("3");
+        TreeNode treeNode2 = new TreeNode("5");
+        TreeNode treeNode3 = new TreeNode("1");
+        TreeNode treeNode4 = new TreeNode("6");
+        TreeNode treeNode5 = new TreeNode("2");
+        TreeNode treeNode6 = new TreeNode("9");
+        TreeNode treeNode7 = new TreeNode("8");
+        TreeNode treeNode8 = new TreeNode("7");
+        TreeNode treeNode9 = new TreeNode("4");
+
+        treeNode1.left = treeNode2;
+        treeNode1.right = treeNode3;
+
+        treeNode2.left = treeNode4;
+        treeNode2.right = treeNode5;
+
+        treeNode3.left = treeNode6;
+        treeNode3.right = treeNode7;
+
+        treeNode5.left = treeNode8;
+        treeNode5.right = treeNode9;
+
+        return treeNode1;
+    }
+
+
+    public static List<String> leafInList(TreeNode node) {
+        List<String> list = new ArrayList<>();
+        bfs(node, list);
+        return list;
+    }
+
+    private static void dfs(TreeNode node, List<String> list) {
+        if (node == null) {
+            return;
+        }
+        if (node.left == null && node.right == null) {
+            list.add(node.name);
+        } else {
+            dfs(node.left, list);
+            dfs(node.right, list);
+        }
+    }
+
+    private static void bfs(TreeNode root, List<String> list) {
+        LinkedList<TreeNode> nodeLinkedList = new LinkedList<>();
+        while (root != null || !nodeLinkedList.isEmpty()) {
+            while (root != null) {
+                nodeLinkedList.offer(root);
+                root = root.left;
+            }
+            root = nodeLinkedList.pollLast();
+            if (root.left == null && root.right == null) {
+                list.add(root.name);
+            }
+            root = root.right;
+        }
     }
 }
