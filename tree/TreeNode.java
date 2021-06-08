@@ -5,18 +5,22 @@ package cn.cc.lib.tree;
  * @date 2021/5/10
  * @desc applied to ...
  */
-public class TreeNode {
+public class TreeNode<T> {
 
-    public String name;
-    public TreeNode left;
-    public TreeNode right;
+    public T value;
+    public TreeNode<T> left;
+    public TreeNode<T> right;
 
-    public TreeNode(String name) {
-        this.name = name;
+    public TreeNode() {
+
+    }
+
+    public TreeNode(T name) {
+        this.value = name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return String.valueOf(value);
     }
 }

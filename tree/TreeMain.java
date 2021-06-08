@@ -13,7 +13,7 @@ public class TreeMain {
 
     public static void main(String[] args) {
 
-        TreeNode treeNode = buildTree();
+        TreeNode<String> treeNode = buildTree();
         //DFS算法
 //        preOrder(treeNode);
 //        middleOrder(treeNode);
@@ -22,29 +22,36 @@ public class TreeMain {
         //BFS算法
 //        levelOrder(treeNode);
 
-        List<String> leaves = leafInList(mockSimilarData());
-        for (String leaf : leaves) {
-            System.out.println(leaf);
-        }
+//        List<String> leaves = leafInList(mockSimilarData());
+//        for (String leaf : leaves) {
+//            System.out.println(leaf);
+//        }
+        System.out.println("1--->"+request(true,true));
+        System.out.println("1--->"+request(true,false));
+        System.out.println("1--->"+request(false,false));
     }
 
-    private static void levelOrder(TreeNode node) {
+    public static boolean request(boolean a, boolean b) {
+        return a ^ b;
+    }
+
+    private static void levelOrder(TreeNode<String> node) {
         List<String> treeLists = levelStore(node);
         for (int i = 0; i < treeLists.size(); i++) {
             System.out.print(treeLists.get(i) + "->");
         }
     }
 
-    protected static List<String> levelStore(TreeNode node) {
+    protected static List<String> levelStore(TreeNode<String> node) {
         if (node == null) {
             return null;
         }
         ArrayList<String> trees = new ArrayList<>();
-        LinkedList<TreeNode> queue = new LinkedList<>();
+        LinkedList<TreeNode<String>> queue = new LinkedList<>();
         queue.offer(node);
         while (!queue.isEmpty()) {
-            TreeNode temp = queue.poll();
-            trees.add(temp.name);
+            TreeNode<String> temp = queue.poll();
+            trees.add(temp.value);
             if (temp.left != null) {
                 queue.offer(temp.left);
             }
@@ -56,31 +63,31 @@ public class TreeMain {
         return trees;
     }
 
-    private static void preOrder(TreeNode node) {
+    private static void preOrder(TreeNode<String> node) {
         if (node == null) {
             return;
         }
-        System.out.print(node.name + "->");
+        System.out.print(node.value + "->");
         preOrder(node.left);
         preOrder(node.right);
     }
 
-    private static void middleOrder(TreeNode node) {
+    private static void middleOrder(TreeNode<String> node) {
         if (node == null) {
             return;
         }
         middleOrder(node.left);
-        System.out.print(node.name + "->");
+        System.out.print(node.value + "->");
         middleOrder(node.right);
     }
 
-    private static void postOrder(TreeNode node) {
+    private static void postOrder(TreeNode<String> node) {
         if (node == null) {
             return;
         }
         postOrder(node.left);
         postOrder(node.right);
-        System.out.print(node.name + "->");
+        System.out.print(node.value + "->");
     }
 
     /**
@@ -88,13 +95,13 @@ public class TreeMain {
      * B      C
      * D   E   F
      */
-    public static TreeNode buildTree() {
-        TreeNode nodeA = new TreeNode("A");
-        TreeNode nodeB = new TreeNode("B (AL)");
-        TreeNode nodeC = new TreeNode("C (AR)");
-        TreeNode nodeD = new TreeNode("D (BL)");
-        TreeNode nodeE = new TreeNode("E (BR)");
-        TreeNode nodeF = new TreeNode("F (CL)");
+    public static TreeNode<String> buildTree() {
+        TreeNode<String> nodeA = new TreeNode<>("A");
+        TreeNode<String> nodeB = new TreeNode<>("B (AL)");
+        TreeNode<String> nodeC = new TreeNode<>("C (AR)");
+        TreeNode<String> nodeD = new TreeNode<>("D (BL)");
+        TreeNode<String> nodeE = new TreeNode<>("E (BR)");
+        TreeNode<String> nodeF = new TreeNode<>("F (CL)");
 
         nodeA.left = nodeB;
         nodeA.right = nodeC;
@@ -109,16 +116,16 @@ public class TreeMain {
 
     /*****************LeetCode 872*****************/
 
-    public static TreeNode mockSimilarData() {
-        TreeNode treeNode1 = new TreeNode("3");
-        TreeNode treeNode2 = new TreeNode("5");
-        TreeNode treeNode3 = new TreeNode("1");
-        TreeNode treeNode4 = new TreeNode("6");
-        TreeNode treeNode5 = new TreeNode("2");
-        TreeNode treeNode6 = new TreeNode("9");
-        TreeNode treeNode7 = new TreeNode("8");
-        TreeNode treeNode8 = new TreeNode("7");
-        TreeNode treeNode9 = new TreeNode("4");
+    public static TreeNode<String> mockSimilarData() {
+        TreeNode<String> treeNode1 = new TreeNode<>("3");
+        TreeNode<String> treeNode2 = new TreeNode<>("5");
+        TreeNode<String> treeNode3 = new TreeNode<>("1");
+        TreeNode<String> treeNode4 = new TreeNode<>("6");
+        TreeNode<String> treeNode5 = new TreeNode<>("2");
+        TreeNode<String> treeNode6 = new TreeNode<>("9");
+        TreeNode<String> treeNode7 = new TreeNode<>("8");
+        TreeNode<String> treeNode8 = new TreeNode<>("7");
+        TreeNode<String> treeNode9 = new TreeNode<>("4");
 
         treeNode1.left = treeNode2;
         treeNode1.right = treeNode3;
@@ -136,36 +143,38 @@ public class TreeMain {
     }
 
 
-    public static List<String> leafInList(TreeNode node) {
+    public static List<String> leafInList(TreeNode<String> node) {
         List<String> list = new ArrayList<>();
         bfs(node, list);
         return list;
     }
 
-    private static void dfs(TreeNode node, List<String> list) {
+    private static void dfs(TreeNode<String> node, List<String> list) {
         if (node == null) {
             return;
         }
         if (node.left == null && node.right == null) {
-            list.add(node.name);
+            list.add(node.value);
         } else {
             dfs(node.left, list);
             dfs(node.right, list);
         }
     }
 
-    private static void bfs(TreeNode root, List<String> list) {
-        LinkedList<TreeNode> nodeLinkedList = new LinkedList<>();
+    private static void bfs(TreeNode<String> root, List<String> list) {
+        LinkedList<TreeNode<String>> nodeLinkedList = new LinkedList<>();
         while (root != null || !nodeLinkedList.isEmpty()) {
             while (root != null) {
                 nodeLinkedList.offer(root);
                 root = root.left;
             }
             root = nodeLinkedList.pollLast();
-            if (root.left == null && root.right == null) {
-                list.add(root.name);
+            if (root != null) {
+                if (root.left == null && root.right == null) {
+                    list.add(root.value);
+                }
+                root = root.right;
             }
-            root = root.right;
         }
     }
 }
